@@ -9,6 +9,7 @@
 </head>
 <body>
     <h1>factory-npc</h1>
+    <h2>消費数を求める</h2>
     <form action="" name="f" onsubmit="return false;">
         <dl>
             <dt>seed</dt>
@@ -21,6 +22,18 @@
         </dl>
     </form>
     <div id="result"></div>
-    <canvas id="canvas" width="2000" height="600"></canvas>
+    <h2>ビジュアライズ</h2>
+    <form action="" name="f2" onsubmit="return false;">
+        <dl>
+            <dt>seed</dt>
+            <dd><input type="text" size="20" name="seed" value="0x1"></dd>
+            <dt>消費</dt>
+            <dd><input type="text" size="10" name="spending" value="0"></dd>
+            <dt>隙間の最小の長さ</dt>
+            <dd><input type="text" size="10" name="leisure" value="50"></dd>
+            <dd><input type="submit" value="表示"></dd>
+        </dl>
+    </form>
+    <canvas id="canvas" width="0" height="0"></canvas>
 </body>
 </html>

@@ -10,7 +10,12 @@ function genNpcs() {
     ];
 }
 
-function main2() {
+function main() {
+    setupSearchForm();
+    setupVisualizeForm();
+}
+
+function setupSearchForm() {
     var form = <HTMLFormElement>document.forms["f"];
     var filterInput = <HTMLInputElement>form.elements["filter"];
     filterInput.addEventListener("keypress", (e) => {
@@ -33,7 +38,23 @@ function main2() {
             break;
         }
     });
-    //form.addEventListener("submit");
+    form.addEventListener("submit", () => {
+        var seed = parseInt((<HTMLInputElement>form.elements["seed"]).value);
+        var spendingMin = parseInt((<HTMLInputElement>form.elements["spendingMin"]).value);
+        var spendingMax = parseInt((<HTMLInputElement>form.elements["spendingMax"]).value);
+        var filter = (<HTMLInputElement>form.elements["filter"]).value;
+        search(seed, spendingMin, spendingMax, filter);
+    });
+}
+
+function setupVisualizeForm() {
+    var form = <HTMLFormElement>document.forms["f2"];
+    form.addEventListener("submit", () => {
+        var seed = parseInt((<HTMLInputElement>form.elements["seed"]).value);
+        var spending = parseInt((<HTMLInputElement>form.elements["spending"]).value);
+        var leisure = parseInt((<HTMLInputElement>form.elements["leisure"]).value);
+        visualize(seed, spending, leisure);
+    });
 }
 
 function search(seed, spendingMin, spendingMax, filter) {
@@ -42,7 +63,7 @@ function search(seed, spendingMin, spendingMax, filter) {
     for (var i = spendingMin; i <= spendingMax; i++) {
         var npcs = genNpcs();
         var simulator = new NPCSimulator(seed_step(seed, i), npcs);
-        simulator.simulate(1000);
+        simulator.simulate(2000);
         var out = "";
         simulator.actionLog.forEach(function (log) {
             if (npcs[log.npcNo].name == "紳士") {
@@ -50,23 +71,27 @@ function search(seed, spendingMin, spendingMax, filter) {
             }
         });
         out = out.slice(0, 20);
-        var $tr = $("<tr>");
-        $tr.append($("<th>").text(i));
-        $tr.append($("<td>").text(out));
-        trs.push($tr);
+        if (out.substr(0, filter.length) == filter || out.substr(1, filter.length) == filter) {
+            var $tr = $("<tr>");
+            $tr.append($("<th>").text(i));
+            $tr.append($("<td>").text(out));
+            trs.push($tr);
+        }
     }
     trs.unshift($("<tr><th>消費<th>結果</tr>"));
     $("#result").empty().append($("<table>").append(trs));
 }
 
-function main() {
+function visualize(seed, initialSpending, leisure) {
     var DIRECTION_NAME = ["上", "下", "左", "右"];
 
     var npcs = genNpcs();
-    var simulator = new NPCSimulator(0, npcs);
-    simulator.simulate(1000);
+    var simulator = new NPCSimulator(seed_step(seed, initialSpending), npcs);
+    simulator.simulate(3000);
 
     var canvas = <HTMLCanvasElement>document.getElementById("canvas");
+    canvas.width = 2000;
+    canvas.height = 100 + 50 * npcs.length + 30;
     var ctx = canvas.getContext("2d");
 
     var spending = new Array<number>();
@@ -89,12 +114,12 @@ function main() {
     ctx.translate(50, 0);
 
     var prev = 0;
-    var sum = 0;
+    var sum = initialSpending;
     spending.forEach(function (n, i) {
         if (n == 0) return;
-        if (i - prev >= 55) {
+        if (i - prev >= leisure) {
             ctx.fillStyle = "#d0d0d0";
-            ctx.fillRect(prev * sc, 0, (i - prev) * sc, 500);
+            ctx.fillRect(prev * sc, 0, (i - prev) * sc, canvas.height);
             ctx.fillStyle = "black";
             ctx.textBaseline = "top";
             ctx.textAlign = "center";
@@ -126,4 +151,4 @@ function main() {
     });
 }
 
-//window.onload = main; 
+window.onload = main; 
