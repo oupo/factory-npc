@@ -17,7 +17,7 @@ function main() {
 function setupSearchForm() {
     var form = document.forms["f"];
     var filterInput = form.elements["filter"];
-    filterInput.addEventListener("keypress", function (e) {
+    filterInput.addEventListener("keydown", function (e) {
         switch (e.keyCode) {
             case 37:
                 filterInput.value += "←";
