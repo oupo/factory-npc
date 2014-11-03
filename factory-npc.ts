@@ -19,21 +19,21 @@ function setupSearchForm() {
     var form = <HTMLFormElement>document.forms["f"];
     var filterInput = <HTMLInputElement>form.elements["filter"];
     filterInput.addEventListener("keypress", (e) => {
-        switch (e.key) {
-        case "Up":
-            filterInput.value += "↑";
-            e.preventDefault();
-            break;
-        case "Down":
-            filterInput.value += "↓";
-            e.preventDefault();
-            break;
-        case "Left":
+        switch (e.keyCode) {
+        case 37:
             filterInput.value += "←";
             e.preventDefault();
             break;
-        case "Right":
+        case 38:
+            filterInput.value += "↑";
+            e.preventDefault();
+            break;
+        case 39:
             filterInput.value += "→";
+            e.preventDefault();
+            break;
+        case 40:
+            filterInput.value += "↓";
             e.preventDefault();
             break;
         }
