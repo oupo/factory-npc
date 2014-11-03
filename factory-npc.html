@@ -3,11 +3,24 @@
 <head>
     <meta charset="utf-8" />
     <title>factory-npc</title>
+    <script src="jquery-2.1.1.min.js"></script>
+    <script src="npc-simulator.js"></script>
     <script src="factory-npc.js"></script>
 </head>
 <body>
     <h1>factory-npc</h1>
-
-    <div id="content"></div>
+    <form action="" name="f" onsubmit="return false;">
+        <dl>
+            <dt>seed</dt>
+            <dd><input type="text" size="20" name="seed" value="0x1"></dd>
+            <dt>消費</dt>
+            <dd><input type="text" size="10" name="spendingMin" value="0"> ～ <input type="text" size="10" name="spendingMax" value="30"></dd>
+            <dt>フィルター</dt>
+            <dd><input type="text" size="30" name="filter" value="" autocomplete="off"></dd>
+            <dd><input type="submit" value="検索"></dd>
+        </dl>
+    </form>
+    <div id="result"></div>
+    <canvas id="canvas" width="2000" height="600"></canvas>
 </body>
 </html>
